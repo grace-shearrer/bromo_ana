@@ -22,7 +22,7 @@ def adillyofapickle(basepath,dic, name):
         print('already have tmp')
     else:
         os.makedirs(os.path.join(basepath,'tmp'))
-    pickle.dump(dic, open(os.path.join(basepath,'tmp','%s_%s'%(name,st)), 'wb'), protocol=4)
+    pickle.dump(dic, open(os.path.join(basepath,'tmp','%s_%s.pkl'%(name,st)), 'wb'), protocol=4)
 
 
 def onetoughjar(p):
@@ -45,11 +45,11 @@ def get_subject_roi(data_dict, roi_num):
  
 def fcisc(inpu,outpu):
 	try:
-		stats = isc(inpu, n_bootstraps=5000, metric='median', method='bootstrap')
+		stats = isc(inpu, n_bootstraps=500, metric='median', method='bootstrap')
 	except ValueError:
 		test = inpu.dropna(axis=1)
 		print(test)
-		stats = isc(test, n_bootstraps=5, metric='median', method='bootstrap')
+		stats = isc(test, n_bootstraps=500, metric='median', method='bootstrap')
 
 
 	return(stats)
@@ -80,7 +80,7 @@ if __name__ == '__main__':
 	stats = fcisc(df, os.path.join(outpath,'isc_ROI-%s_%s'%(parser.ROI, parser.condition)))
 # save pickle
 	packit = {'%s'%parser.condition:{'%s_ROI'%parser.ROI:{'stats':stats, 'df':df}}}
-
+	adillyofapickle(outpath,packit, '%s_%s'%(parser.condition,parser.ROI))
 
 
 
